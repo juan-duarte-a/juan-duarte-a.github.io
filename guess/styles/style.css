@@ -1,0 +1,42 @@
+html {
+    font-size: 24px;
+    font-family: "Open Sans", sans-serif;
+    background-color: rgb(243, 240, 243);
+}
+
+body {
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+#main-div {
+    width: 27em;
+    border: 3px solid rgb(202, 202, 202);
+    padding: 0 25px 25px 25px;
+    margin: 0;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-55%);
+    border-radius: 1em;
+  }
+
+  #guessField {
+    font-size: 24px;
+  }
+
+  #guessSubmit, button {
+    font-size: 24px;
+  }
+
+  #lastResult {
+    text-align: center;
+  }
+
+  #reset-button-container {
+    text-align: center;
+  }
