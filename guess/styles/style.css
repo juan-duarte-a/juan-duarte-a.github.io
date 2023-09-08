@@ -5,6 +5,7 @@ html {
 }
 
 body {
+    font-size: 1em;
     display: flex;
     justify-content: center;
 }
@@ -15,8 +16,8 @@ h1 {
 
 #main-div {
     width: 27em;
-    border: 3px solid rgb(202, 202, 202);
-    padding: 0 25px 25px 25px;
+    border: 0.2em solid rgb(202, 202, 202);
+    padding: 0 1em 1em 1em;
     margin: 0;
     background-color: white;
     position: absolute;
@@ -26,11 +27,16 @@ h1 {
   }
 
   #guessField {
-    font-size: 24px;
+    font-size: 1em;
+    width: 40%;
   }
 
   #guessSubmit, button {
-    font-size: 24px;
+    font-size: 1em;
+  }
+
+  #guessSubmit {
+    width: calc(60% - 8em + 4px);
   }
 
   #lastResult {

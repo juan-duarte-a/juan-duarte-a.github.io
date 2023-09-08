@@ -86,4 +86,16 @@ guessField.addEventListener("keyup", (guessField) => {
     }
 });
 
+function checkViewportWidth() {
+    console.log("hey!");
+    if (window.innerWidth < 750) {
+        document.body.style.fontSize = "3vw";
+    } else {
+        document.body.style.fontSize = "24px";
+    }
+}
+
+window.addEventListener('resize', checkViewportWidth);
+
+checkViewportWidth();
 guessField.focus();
