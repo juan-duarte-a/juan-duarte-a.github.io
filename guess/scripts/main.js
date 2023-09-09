@@ -1,19 +1,78 @@
 const guesses = document.getElementById("guesses");
 const lastResult = document.getElementById("lastResult");
 const lowOrHigh = document.getElementById("lowOrHigh");
-
 const guessSubmit = document.getElementById("guessSubmit");
 const guessField = document.getElementById("guessField");
 
 let guessCount = 1;
 let resetButton;
-let randomNumber;
 
-function updateRandomNumber() {
-    randomNumber = Math.floor(Math.random() * 100) + 1;
+class RandomNumber {
+    #value;
+
+    generate() {
+        this.#value = Math.floor(Math.random() * 100) + 1;
+    }
+
+    compare(number) {
+        if (number === this.#value) {
+            return 0;
+        } else if (number < this.#value) {
+            return -1;
+        } else {
+            return 1;
+        }
+    }
 }
 
-updateRandomNumber();
+const randomNumber = new RandomNumber();
+randomNumber.generate();
+
+function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function launchConfetti() {
+    const defaults = {
+        ticks: 50,
+        gravity: 0,
+        decay: 0.92,
+        startVelocity: 20,
+    };
+
+    function shoot() {
+        confetti({
+            ...defaults,
+            scalar: 2,
+            shapes: ["circle", "square"],
+            colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
+            angle: randomInRange(55, 125),
+            spread: randomInRange(50, 70),
+            particleCount: randomInRange(20, 40),
+            origin: { x: randomInRange(0.3, 0.7), y: 0.4 },
+        });
+
+        confetti({
+            ...defaults,
+            scalar: 2.5,
+            shapes: ["text"],
+            shapeOptions: {
+                text: {
+                    value: ["🦄", "🌈"],
+                },
+            },
+            angle: randomInRange(55, 125),
+            spread: randomInRange(50, 70),
+            particleCount: randomInRange(20, 40),
+            origin: { x: randomInRange(0.3, 0.7), y: 0.4 },
+        });
+    }
+
+    for (let i = 0; i < 7000; i += 1000) {
+        setTimeout(shoot, i);
+    }
+
+}
 
 function checkGuess() {
     const userGuess = Number(guessField.value);
@@ -24,12 +83,13 @@ function checkGuess() {
         guesses.textContent = `${guesses.textContent}, ${userGuess}`;
     }
 
-    if (userGuess === randomNumber) {
+    if (randomNumber.compare(userGuess) === 0) {
         lastResult.textContent = "Congratulations! You got it right!";
         lastResult.style.backgroundColor = "mediumseagreen";
         lowOrHigh.textContent = "";
         setGameOver();
-    } else if (guessCount === 10) {
+        launchConfetti();
+    } else if (guessCount === 5) {
         lastResult.textContent = "GAME OVER!";
         lowOrHigh.textContent = "";
         setGameOver();
@@ -37,9 +97,9 @@ function checkGuess() {
         lastResult.textContent = "Wrong!";
         lastResult.style.backgroundColor = "lightcoral";
 
-        if (userGuess < randomNumber) {
+        if (randomNumber.compare(userGuess) < 0) {
             lowOrHigh.textContent = "Last guess was too low!";
-        } else if (userGuess > randomNumber) {
+        } else if (randomNumber.compare(userGuess) > 0) {
             lowOrHigh.textContent = "Last guess was too high!";
         }
     }
@@ -68,8 +128,8 @@ function resetGame() {
     }
 
     resetButton.parentNode.removeChild(resetButton);
-    
-    updateRandomNumber();
+
+    randomNumber.generate();
 
     guessField.disabled = false;
     guessSubmit.disabled = false;
@@ -82,12 +142,11 @@ guessSubmit.addEventListener("click", checkGuess);
 
 guessField.addEventListener("keyup", (guessField) => {
     if (guessField.key === "Enter") {
-      checkGuess();
+        checkGuess();
     }
 });
 
 function checkViewportWidth() {
-    console.log("hey!");
     if (window.innerWidth < 750) {
         document.body.style.fontSize = "3vw";
     } else {
